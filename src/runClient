@@ -1,0 +1,16 @@
+#!/bin/bash
+
+    numCalls=$1
+    tomcruise=$3
+    jpg=$4
+    for (( i=1; i<=$numCalls; i++ ))
+    do
+	
+        echo "Doing run $i"
+	java echoserver.EchoClient < tomcairport.jpg > $i.jpg &
+    done
+    echo "Now waiting"
+    date
+    wait
+    echo "Done"
+    date

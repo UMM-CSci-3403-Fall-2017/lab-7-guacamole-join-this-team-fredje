@@ -27,6 +27,8 @@ public class EchoClient{
 			System.out.write(socketByte);
 		}
 		System.out.flush();
+		socket.shutdownInput();
+
 	}
 
 

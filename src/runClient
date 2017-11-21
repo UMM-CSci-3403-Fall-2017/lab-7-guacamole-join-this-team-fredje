@@ -6,10 +6,11 @@
     do
 	
         echo "Doing run $i"
-	java echoserver.EchoClient < maxresdefault.jpg > $i.jpg &
+	java echoserver.EchoClient < maxresdefault.jpg > result/$i.jpg &
     done
     echo "Now waiting"
     date
     wait
     echo "Done"
     date
+    

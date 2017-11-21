@@ -9,7 +9,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class EchoServer implements Runnable{
+public class EchoServer implements Runnable {
 	public static final int PORT_NUMBER = 6013;
 
 	public static void main(String[] args) throws IOException, InterruptedException {
@@ -21,33 +21,41 @@ public class EchoServer implements Runnable{
 		ServerSocket serverSocket = new ServerSocket(PORT_NUMBER);
 		ExecutorService pool = Executors.newCachedThreadPool();
 		while (true) {
-			Socket socket = null;
-			pool.execute(new Handler(socket = serverSocket.accept()));
-			InputStream inputStream = socket.getInputStream();
+			Socket socket = serverSocket.accept();
+			pool.execute(new Handler(socket));
+		}
+	
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+
+	}
+
+}
+
+class Handler extends Thread implements Runnable {
+	private final Socket socket;
+
+	Handler(Socket socket) {
+		this.socket = socket;
+	}
+
+	public void run() {
+		InputStream inputStream;
+		try {
+			inputStream = socket.getInputStream();
 			OutputStream outputStream = socket.getOutputStream();
 			int b;
 			while ((b = inputStream.read()) != -1) {
 				outputStream.write(b);
 			}
 			socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e);
 		}
 		
 	}
-
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	
 }
-
-class Handler implements Runnable {
-	private final Socket socket;
-	Handler(Socket socket) { this.socket = socket; }
-	public void run() {
-		// read and service request on socket
-	}
-}
-

@@ -21,8 +21,10 @@ public class EchoClient{
 		OutputStream socketOutputStream = socket.getOutputStream();
 		int readByte;
 		int socketByte;
+		//Creates a new thread to send data to the server
 		Thread thread1 = new Thread();
 		try{
+			//sending info to server
 			while ((readByte = System.in.read()) != -1) {
 				socketOutputStream.write(readByte);
 			}
@@ -32,12 +34,13 @@ public class EchoClient{
 		catch(IOException e){
 			System.out.println(e);
 		}
-
+		//Creates a second thread for reading the data from the server
 		thread1.start();
 		Thread thread2 = new Thread();
 		try{
+			//reading info from the server
 			while ((socketByte = socketInputStream.read()) != -1) {
-				//int socketByte = socketInputStream.read();
+			
 				System.out.write(socketByte);
 			}
 			System.out.flush();
@@ -48,10 +51,6 @@ public class EchoClient{
 		thread2.start();
 	}
 
-	/*@Override
-	public void run() {
-		// TODO Auto-generated method stub
 
-	}*/
 
 }

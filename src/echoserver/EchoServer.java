@@ -19,9 +19,11 @@ public class EchoServer implements Runnable {
 
 	private void start() throws IOException, InterruptedException {
 		ServerSocket serverSocket = new ServerSocket(PORT_NUMBER);
+		//Make a thread pool to do things in  async
 		ExecutorService pool = Executors.newCachedThreadPool();
 		while (true) {
 			Socket socket = serverSocket.accept();
+			//hands socket to handler and to start using threads
 			pool.execute(new Handler(socket));
 		}
 	
@@ -41,7 +43,7 @@ class Handler extends Thread implements Runnable {
 	Handler(Socket socket) {
 		this.socket = socket;
 	}
-
+	//run instructions from the client
 	public void run() {
 		InputStream inputStream;
 		try {
@@ -54,7 +56,7 @@ class Handler extends Thread implements Runnable {
 			socket.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			System.out.println(e);
+			System.out.println();
 		}
 		
 	}

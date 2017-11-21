@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class EchoClient {
+public class EchoClient{
 	public static final int PORT_NUMBER = 6013;
 
 	public static void main(String[] args) throws IOException {
@@ -20,14 +20,38 @@ public class EchoClient {
 		InputStream socketInputStream = socket.getInputStream();
 		OutputStream socketOutputStream = socket.getOutputStream();
 		int readByte;
-		while ((readByte = System.in.read()) != -1) {
-			socketOutputStream.write(readByte);
-			int socketByte = socketInputStream.read();
-			System.out.write(socketByte);
+		int socketByte;
+		Thread thread1 = new Thread();
+		try{
+			while ((readByte = System.in.read()) != -1) {
+				socketOutputStream.write(readByte);
+			}
+			socketOutputStream.flush();
+			socket.shutdownOutput();
 		}
-		System.out.flush();
-		socket.shutdownInput();
+		catch(IOException e){
+			System.out.println(e);
+		}
 
+		thread1.start();
+		Thread thread2 = new Thread();
+		try{
+			while ((socketByte = socketInputStream.read()) != -1) {
+				//int socketByte = socketInputStream.read();
+				System.out.write(socketByte);
+			}
+			System.out.flush();
+			socket.close();
+		}catch(IOException e){
+			System.out.println(e);
+		}
+		thread2.start();
 	}
+
+	/*@Override
+	public void run() {
+		// TODO Auto-generated method stub
+
+	}*/
 
 }
